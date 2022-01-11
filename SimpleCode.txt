@@ -1,0 +1,131 @@
+#include<iostream>
+ 
+using namespace std;
+ 
+class Node{
+public:
+	int data;
+	Node *next;
+};
+
+class LinkList
+{
+	Node *first, *last;
+public:
+	LinkList()
+	{
+		first = NULL;
+		last = NULL;
+	}
+
+	void addFront(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		node->next= NULL;
+
+		if(first == NULL)
+		{
+			first = last = node;
+		}
+		else
+		{
+			node->next = first;
+			first = node;	
+		}
+	}
+
+	void addRear(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		node->next= NULL;
+
+		if(first == NULL)
+		{
+			first = last = node;
+		}
+		else
+		{
+			last->next = node;
+			last = node;
+				
+		}
+	}
+
+	void deleteFront()
+	{
+		Node *temp = first;
+
+		if(first==NULL)
+			cout<<"List is empty";
+		else if(first->next == NULL)
+		{
+			first = last = NULL;
+		}
+		else
+		{
+			first = first->next;
+		}
+
+		delete temp;
+	}
+
+	void deleteRear()
+	{
+		Node *temp = first;
+		if(first==NULL)
+			cout<<"List is empty";
+		else if(first->next == NULL)
+		{
+			first = last = NULL;
+		}
+		else
+		{
+			while(temp->next->next!=NULL)
+			{
+				temp = temp->next;
+			}
+
+			last = temp;
+			temp = last->next;
+			last->next = NULL;
+		}
+
+		delete temp;
+	}
+
+	void display()
+	{
+		Node *temp = first;
+
+		while(temp != NULL)
+		{
+			cout<<temp->data<<"  ";
+			temp = temp->next;
+		}
+	}
+
+
+
+};
+
+int main() {
+    
+	LinkList list;
+
+	int n=0;
+
+	while(n!=-1)
+	{
+		cout<<"enter number";
+		cin>>n;
+		list.addRear(n);
+	}
+
+	list.deleteFront();
+
+	list.deleteRear();
+
+	list.display();
+}

@@ -1,0 +1,187 @@
+#include<iostream>
+using namespace std;
+class Node{
+public:
+	int data;
+	Node *next,*prev;
+	Node(){
+		next = nullptr;
+		prev = nullptr;
+	}
+};
+class LinkedList{
+	Node *first;
+public:
+	LinkedList(){
+		first = nullptr;
+	}
+	bool isEmpty(){
+		if (first == nullptr)
+			return true;
+		else
+			return false;
+	}
+	void addRear(int n){
+		Node *node = new Node();
+		node->data = n;
+		if (isEmpty()){
+			first = node;
+			first->next = first;
+			first->prev = first;
+		}
+		else{
+			Node *last = first;
+			/*while (temp->next != nullptr){
+			temp = temp->next;
+			}*/
+			getLastNode(last);
+
+			last->next = node;
+			node->next = first;
+			node->prev = last;
+			first->prev = node;
+		}
+	}
+
+	void getLastNode(Node *&temp){
+		if (temp->next == first){
+			return;
+		}
+		else{
+			temp = temp->next;
+			getLastNode(temp);
+		}
+	}
+	void addFront(int n){
+		Node *node = new Node();
+		node->data = n;
+		if (isEmpty()){
+			first = node;
+			first->next = first;
+			first->prev = first;
+		}
+		else{
+			Node *last = first;
+			getLastNode(last);
+
+
+			node->next = first;
+			first->prev = node;
+
+			last->next = node;
+			node->prev = last;
+
+			first = node;
+			
+		}
+	}
+	void deleteFront(){
+		if (isEmpty())
+			cout << "list is empty";
+		else if (first->next == first){
+			Node *temp = first;
+			first = nullptr;
+			delete temp;
+		}
+		else{
+			Node *last = first;
+			getLastNode(last);
+
+			Node *temp = first;
+			first = first->next;
+			delete temp;
+			last->next = first;
+			first->prev = last;
+		}
+	}
+	void deleteRear(){
+		if (isEmpty())
+			cout << "list is empty";
+		else if (first->next == first){
+			Node *temp = first;
+			first = nullptr;
+			delete temp;
+		}
+		else{
+			Node *secondLastNode = first;
+			/*while (temp->next->next != nullptr){
+			temp = temp->next;
+			}*/
+			getSecondLastNode(secondLastNode);
+			delete secondLastNode->next;
+			secondLastNode->next = first;
+			first->prev = secondLastNode;
+		}
+
+
+	}
+
+	void getSecondLastNode(Node *&temp){
+		if (temp->next->next == first){
+			return;
+		}
+		else{
+			temp = temp->next;
+			getSecondLastNode(temp);
+		}
+	}
+	void display(){
+		Node *temp = first;
+		/*while (temp != nullptr){
+		cout << temp->data << " ";
+		temp = temp->next;
+		}*/
+		displayByRecursionFromFirst(first);
+		cout << endl;
+		Node *last = first;
+		getLastNode(last);
+		displayByRecursionFromLast(last);
+	}
+	void displayByRecursionFromFirst(Node *temp){
+		if (temp->next == first){
+			cout << temp->data << " ";
+			return;
+		}
+		else{
+			cout << temp->data << " ";
+			displayByRecursionFromFirst(temp->next);
+		}
+	}
+
+	void displayByRecursionFromLast(Node *temp){
+		if (temp== first){
+			cout << temp->data << " ";
+			return;
+		}
+		else{
+			cout << temp->data << " ";
+			displayByRecursionFromLast(temp->prev);
+		}
+	}
+	~LinkedList(){
+		Node *temp = first;
+		Node *prev;
+		while (true){
+			prev = temp;
+			temp = temp->next;
+			cout << "deleting " << prev->data << endl;
+			delete prev;
+			if (temp == first)
+				break;
+		}
+	}
+};
+int main(){
+
+	LinkedList list;
+	list.addRear(5);
+	list.addRear(15);
+	list.addRear(25);
+	list.addRear(35);
+	list.addFront(45);
+	list.deleteFront();
+	list.deleteRear();
+	list.display();
+	cout << endl;
+	return 0;
+}

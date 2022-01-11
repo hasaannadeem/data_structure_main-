@@ -1,0 +1,111 @@
+#include<iostream>
+using namespace std;
+class Node{
+public:
+	int data;
+	Node *next;
+	Node(){
+		next = nullptr;
+	}
+};
+class LinkedList{
+	Node *first, *last;
+public:
+	LinkedList(){
+		first = last = nullptr;
+	}
+	bool isEmpty(){
+		if (first == nullptr)
+			return true;
+		else
+			return false;
+	}
+	void addRear(int n){
+		Node *node = new Node();
+		node->data = n;
+		if (isEmpty()){
+			first = last = node;
+		}
+		else{
+			last->next = node;
+			last = node;
+		}
+	}
+	void addFront(int n){
+		Node *node = new Node();
+		node->data = n;
+		if (isEmpty()){
+			first = last = node;
+		}
+		else{
+			node->next = first;
+			first = node;
+		}
+	}
+	void deleteFront(){
+		if (isEmpty())
+			cout << "list is empty";
+		else if(first == last){
+			Node *temp = first;
+			first = last = nullptr;
+			delete temp;
+		}
+		else{
+			Node *temp = first;
+			first = first->next;
+			delete temp;
+		}
+	}
+	void deleteRear(){
+		if (isEmpty())
+			cout << "list is empty";
+		else if (first == last){
+			Node *temp = first;
+			first = last = nullptr;
+			delete temp;
+		}
+		else{
+			Node *temp = first;
+			while (temp->next->next != nullptr){
+				temp = temp->next;
+			}
+			last = temp;
+			delete last->next;
+			last->next = nullptr;
+		}
+		
+		
+	}
+
+	void display(){
+		Node *temp = first;
+		while (temp != nullptr){
+			cout << temp->data<<" ";
+			temp = temp->next;
+		}
+	}
+	~LinkedList(){
+		Node *temp = first;
+		Node *prev;
+		while (temp != nullptr){
+			prev = temp;
+			temp = temp->next;
+			cout << "deleting " << prev->data;
+			delete prev;
+		}
+	}
+};
+int main(){
+	
+	LinkedList list;
+	list.addRear(5);
+	list.addRear(15);
+	list.addRear(25);
+	list.addRear(35);
+	list.addFront(45);
+	list.deleteFront();
+	list.deleteRear();
+	list.display();
+	cout << endl;
+	return 0;
+}

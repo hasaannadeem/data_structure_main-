@@ -1,0 +1,275 @@
+#include<iostream>
+ 
+using namespace std;
+ 
+class Node{
+public:
+	int data;
+	Node *next;
+	Node()
+	{
+		data=0;
+		next=NULL;
+	}
+};
+
+class LinkList
+{
+	Node *first, *last;
+public:
+	LinkList()
+	{
+		first = NULL;
+		last = NULL;
+	}
+
+	void addFront(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		
+
+		if(first == NULL)
+		{
+			first = last = node;
+			node->next = node;
+			
+		}
+		else
+		{
+			node->next = first;
+			first = node;	
+			last->next = first;
+		}
+	}
+
+	void addRear(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		
+
+		if(first == NULL)
+		{
+			first = last = node;
+			node->next = node;
+		}
+		else
+		{
+			last->next = node;
+			last = node;
+			last->next = first;
+				
+		}
+	}
+
+	void deleteFront()
+	{
+		Node *temp = first;
+
+		if(first==NULL)
+			cout<<"List is empty";
+		else if(first->next == first)
+		{
+			first = last = NULL;
+		}
+		else
+		{
+			first = first->next;
+			last->next = first;
+		}
+
+		delete temp;
+	}
+
+	void deleteRear()
+	{
+		Node *temp = first;
+		if(first==NULL)
+			cout<<"List is empty";
+		else if(first->next == first)
+		{
+			first = last = NULL;
+		}
+		else
+		{
+			while(temp->next->next!=first)
+			{
+				temp = temp->next;
+			}
+
+			last = temp;
+			temp = last->next;
+			last->next = first;
+		}
+
+		delete temp;
+	}
+
+	void display()
+	{
+		Node *temp = first;
+
+		while(true)
+		{
+			cout<<temp->data<<"  ";
+			temp = temp->next;
+			if(temp==first)
+				break;
+		}
+	}
+
+	void insert(int val, int index)
+	{
+		
+		if(index == 0)
+			addFront(val);
+		else if(index == size()-1) 
+			addRear(val);
+		else
+		{
+			Node *temp = first;
+			int count=0;
+			while(true)
+			{			
+				if(count == index - 1)
+					break;
+
+				temp = temp->next;
+				count++;	
+
+				if(temp==first)
+				break;
+			}
+
+			Node *node = new Node();
+			node->data = val;
+			
+			node->next = temp->next;
+			temp->next = node;
+		}
+
+	}
+
+	int size()
+	{
+		Node *temp = first;
+		int count=0;
+		while(true)
+		{
+			count++;
+			temp = temp->next;
+			if(temp==first)
+				break;
+		}
+		return count;
+	}
+
+	int locate(int val)
+	{
+		Node *temp = first;
+		int index=0;
+		while(true)
+		{
+			if(temp->data == val)
+			{
+				return index;
+			}
+			index++;
+			temp = temp->next;
+			if(temp==first)
+				break;
+		}
+
+		return -1;
+
+	}
+
+	int retrieve(int index)
+	{
+		Node *temp = first;
+		int count=0;
+		while(true)
+		{
+			if(count == index)
+				return temp->data;
+			count++;
+			temp = temp->next;
+
+			if(temp==first)
+				break;
+		}
+
+		return -1;
+
+	}
+
+	~LinkList()
+	{
+		Node * temp = first;
+		Node * prev;
+
+		while(true)
+		{
+			cout<<"\ndeleting "<<temp->data;
+
+			prev = temp;
+			temp = temp ->next;
+
+			delete prev;
+			if(temp==first)
+				break;
+		}
+	}
+
+
+};
+
+int main() {
+    
+	LinkList *list = new LinkList();
+
+	int n=0;
+
+	while(1)
+	{
+		cout<<"enter number";
+		cin>>n;
+		if(n==-1)
+			break;
+		list->addRear(n);
+	}
+
+	list->display();
+	
+	list->deleteFront();
+
+	list->deleteRear();
+
+	list->display();
+
+	cout<<"\nsize is "<<list->size();
+
+	list->insert(100,0);
+
+	list->insert(100,list->size()-1);
+
+	list->insert(100,2);
+
+	list->display();
+
+	cout<<"\nsize is "<<list->size();
+
+	cout<<"\nlocate(3): "<<list->locate(3);
+
+	cout<<"\nlocate(55): "<<list->locate(55);
+
+	cout<<"\nretrieve(5): "<<list->retrieve(5);
+
+	cout<<"\nretrieve(0): "<<list->retrieve(0);
+
+	cout<<"\nretrieve(size-1): "<<list->retrieve(list->size()-1);
+
+	delete list; 
+
+}

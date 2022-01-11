@@ -1,0 +1,265 @@
+#include<iostream>
+#include<cstdlib>
+ 
+using namespace std;
+ 
+class Node
+{
+public:
+	int data;
+	Node *next;
+	Node *previous;
+	Node()
+	{
+		next = NULL;
+		previous = NULL;
+	}
+};
+
+class LinkList
+{
+	Node *first, *last;
+public:
+	LinkList()
+	{
+		first = last = NULL;
+	}
+
+	void addRear(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		
+
+		if(first == NULL)
+		{
+			first = last = node;
+		}else
+		{
+			last->next = node;
+			node->previous = last;
+			last = node;
+		}
+
+	}
+
+	void addFront(int val)
+	{
+		Node *node = new Node();
+		node->data = val;
+		
+
+		if(first == NULL)
+		{
+			first = last = node;
+		}else
+		{
+			node->next = first;
+			first->previous = node;
+			first = node;
+		}
+
+	}
+
+	void deleteFront()
+	{
+		Node *temp = first;
+		if(temp == NULL)
+			cout<<"list is empty";
+		else if(temp->next == NULL)
+		{
+			first = last = NULL;
+		}
+		else {
+			first = first->next;
+			first->previous = NULL;
+		}
+		delete temp;
+	}
+
+	void deleteRear()
+	{
+		Node *temp = last;
+		if(temp == NULL)
+			cout<<"list is empty";
+		else if(temp->previous == NULL)
+		{
+			first = last = NULL;
+		}
+		else {
+			
+				last = last->previous;
+				last->next = NULL;
+		}
+
+		delete temp;
+	}
+
+
+	void display()
+	{
+		cout<<"\ndisplaying using next\n";
+		Node *temp=first;
+		while(temp!=NULL)
+		{
+			cout<<temp->data<<" ";
+			temp = temp->next;
+		}
+
+		cout<<"\ndisplaying using previous\n";
+		temp=last;
+		while(temp!=NULL)
+		{
+			cout<<temp->data<<" ";
+			temp = temp->previous;
+		}
+
+	}
+
+	void deleteAtIndex(int index)
+	{
+		if(index == 0)
+			deleteFront();
+		if(index == size()-1)
+			deleteRear();
+		else if(index<0 || index > size()-1)
+			cout<<"out of bound";
+		else
+		{
+		Node *temp=first;
+		int counter = 0;
+			while(temp!=NULL)
+			{
+				if(counter == index - 1)
+					break;
+
+				counter++;
+				temp = temp->next;
+			}
+
+			Node *prev;
+			prev = temp->next;
+			temp->next = prev->next;
+			temp->next->previous = temp;
+
+			delete prev;
+
+		}
+
+	}
+
+	int locate(int val)
+	{
+		Node *temp=first;
+		int index=0;
+		while(temp!=NULL)
+		{
+			if(temp->data == val)
+				return index;
+			index++;
+			temp = temp->next;
+		}
+
+		return -1;
+	}
+
+	int retrieveAtIndex(int index)
+	{
+		Node *temp=first;
+		int counter=0;
+		while(temp!=NULL)
+		{
+			if(counter == index)
+				return temp->data;
+
+			counter++;
+			temp = temp->next;
+		}
+
+		return -1;
+
+
+	}
+
+	int size()
+	{
+
+		int counter = 0;
+
+		Node *temp=first;
+		while(temp!=NULL)
+		{
+			counter++;			
+			temp = temp->next;
+		}
+
+		return counter;
+
+	}
+
+	~LinkList()
+	{
+
+		Node *temp=first;
+		Node *prev;
+		while(temp!=NULL)
+		{
+			prev = temp;
+			temp = temp->next;
+			cout<<"\n deleting"<<prev->data;
+			delete prev;
+		}
+
+	}
+
+
+};
+
+
+int main()
+{
+	LinkList *list = new LinkList();
+
+	int n=0;
+
+	while(1)
+	{
+		cout<<"enter value of new node: ";
+		cin>>n;
+		if(n==-1)
+			break;
+		list->addRear(n);
+	}
+	//list.deleteFront();
+	//list.deleteRear();
+
+	list->display();
+/*
+	list->deleteFront();
+	list->deleteRear();
+	*/
+	cout<<"\n deleteAtIndex(2)";
+	list->deleteAtIndex(2);
+
+	list->display();
+	/*
+	//cout<<"\nthe size of list is = "<<list->size();
+
+	cout<<"\n deleteAtIndex(5)";
+
+	//list->deleteAtIndex(5);
+
+	list->display();
+
+	cout<<"\nlocate(99)"<<list->locate(99);
+
+	cout<<"\nlocate(0)"<<list->locate(0);
+
+	cout<<"\nretrieveAtIndex(99)"<<list->retrieveAtIndex(99);
+
+	cout<<"\nretrieveAtIndex(0)"<<list->retrieveAtIndex(0);
+	*/
+	delete list;
+
+
+}

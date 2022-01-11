@@ -1,0 +1,12 @@
+void displayTillMid()
+	{
+		Node *temp = first;
+		Node* temp2 = first;
+
+		while(temp2 != NULL)
+		{
+			cout<<temp->data<<"  ";
+			temp = temp->next;
+			temp2 = temp2->next->next;
+		}
+	}
